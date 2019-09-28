@@ -15,24 +15,29 @@ class Player extends ObjectClass {
   update(dt) {
     super.update(dt);
 
-    // TODO: Update score
+    // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
 
     // Make sure the player stays in bounds
     this.x = Math.max(0, Math.min(Constants.MAP_SIZE, this.x));
     this.y = Math.max(0, Math.min(Constants.MAP_SIZE, this.y));
 
-    // TODO: Fire a bullet, if needed
+    // Fire a bullet, if needed
+    this.fireCooldown -= dt;
+    if (this.fireCooldown <= 0) {
+      this.fireCooldown += Constants.PLAYER_FIRE_COOLDOWN;
+      return new Bullet(this.id, this.x, this.y, this.direction);
+    }
 
     return null;
   }
 
   takeBulletDamage() {
-    // update this player's hp with the bullet damage
+    this.hp -= Constants.BULLET_DAMAGE;
   }
 
   onDealtDamage() {
-    // update the score for this player
+    this.score += Constants.SCORE_BULLET_HIT;
   }
 
   serializeForUpdate() {

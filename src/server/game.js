@@ -38,9 +38,14 @@ class Game {
     const dt = (now - this.lastUpdateTime) / 1000;
     this.lastUpdateTime = now;
 
-    // TODO: Update each bullet
+    // Update each bullet
     const bulletsToRemove = [];
-
+    this.bullets.forEach(bullet => {
+      if (bullet.update(dt)) {
+        // Destroy this bullet
+        bulletsToRemove.push(bullet);
+      }
+    });
     this.bullets = this.bullets.filter(bullet => !bulletsToRemove.includes(bullet));
 
     // Update each player
